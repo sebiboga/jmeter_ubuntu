@@ -15,27 +15,23 @@ sudo apt install -y jmeter
 # 5. Install GTK module to suppress "canberra-gtk-module" warnings
 sudo apt install -y libcanberra-gtk3-module
 
-# 6. Set ownership and permissions for the existing JMeter directory
-sudo chown -R root:root /usr/share/jmeter
+# 6. Set ownership and permissions for the entire JMeter directory to the current user
+sudo chown -R $USER:$USER /usr/share/jmeter
 sudo chmod -R a+rX /usr/share/jmeter
 
 # 7. Download the latest Apache JMeter binary (update version if needed)
 wget https://dlcdn.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
 
 # 8. Extract the latest JMeter archive over the existing installation
-sudo tar --strip-components=1 -xvzf apache-jmeter-5.6.3.tgz -C /usr/share/jmeter
+tar --strip-components=1 -xvzf apache-jmeter-5.6.3.tgz -C /usr/share/jmeter
 
 # 9. Download the JMeter Plugins Manager JAR into the extensions directory
-sudo wget -O /usr/share/jmeter/lib/ext/plugins-manager.jar https://jmeter-plugins.org/get/
+wget -O /usr/share/jmeter/lib/ext/plugins-manager.jar https://jmeter-plugins.org/get/
 
-# 10. Set ownership and permissions for plugins-manager.jar
-sudo chown root:root /usr/share/jmeter/lib/ext/plugins-manager.jar
-sudo chmod a+r /usr/share/jmeter/lib/ext/plugins-manager.jar
+# 10. Ensure Plugins Manager JAR has correct permissions
+chmod a+r /usr/share/jmeter/lib/ext/plugins-manager.jar
 
-# 11. Backup jmeter.properties (no log file changes since no extra log dir needed)
-sudo cp /usr/share/jmeter/bin/jmeter.properties /usr/share/jmeter/bin/jmeter.properties.backup
-
-# 12. Verify the updated JMeter version and final message
+# 11. Verify updated JMeter version and show final message
 jmeter --version
-echo "Installation complete. Start JMeter using the 'jmeter' command."
-echo "Remember to run JMeter from a directory where you have write permissions to avoid log file permission issues."
+echo "Installation complete. Run JMeter as your user with: jmeter"
+echo "Since you own /usr/share/jmeter, Plugins Manager can now install plugins properly."
